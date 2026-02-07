@@ -60,6 +60,18 @@ if [ "$SONG_KEY" != "$CACHED_SONG" ]; then
         fi
     fi
 
+    # Try j-lyric.net (Japanese lyrics database)
+    if [ -z "$LYRICS" ]; then
+        JLYRIC_PAGE=$(curl -s --max-time 5 -A "Mozilla/5.0" \
+            "https://j-lyric.net/search.php?ct=2&ca=2&ka=${ARTIST_ENC}&kt=${TITLE_ENC}" 2>/dev/null)
+        JLYRIC_URL=$(echo "$JLYRIC_PAGE" | grep -oP 'href="(https://j-lyric\.net/artist/a[^/]+/l[^"]*\.html)"' | head -1 | grep -oP 'https://[^"]*')
+        if [ -n "$JLYRIC_URL" ]; then
+            LYRICS=$(curl -s --max-time 5 -A "Mozilla/5.0" "$JLYRIC_URL" 2>/dev/null \
+                | grep -oP '(?<=id="Lyric">).*?(?=</p>)' \
+                | sed 's/<br[^>]*>/\n/g; s/<[^>]*>//g')
+        fi
+    fi
+
     # Try lyrics.ovh as final fallback
     if [ -z "$LYRICS" ]; then
         RESPONSE=$(curl -s --max-time 5 "https://api.lyrics.ovh/v1/${ARTIST_ENC}/${TITLE_ENC}" 2>/dev/null)
