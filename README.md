@@ -12,6 +12,7 @@ A portable, minimal set of Conky widgets for Linux desktops. Transparent, clean,
 | **Inspirational Quotes** | Top-left | Random quotes fetched from ZenQuotes API, refreshes every 5 min |
 | **System Monitor** | Top-right | CPU, RAM, disk usage, and network speed |
 | **Now Playing** | Bottom-left | Currently playing song via playerctl (Spotify, VLC, etc.) |
+| **Lyrics** | Bottom-right | Auto-scrolling lyrics for the current song, fetched from lrclib.net/lyrics.ovh |
 
 ## Quick Install
 
@@ -22,7 +23,7 @@ cd conky-desktop
 ```
 
 The install script will:
-- Install `conky-all` and `playerctl`
+- Install `conky-all`, `playerctl`, `jq`, and `curl`
 - Install custom fonts (Anurati, Chilanka, Roboto Mono)
 - Copy widget configs to `~/.config/conky/`
 - Auto-detect your active network interface
@@ -41,6 +42,7 @@ conky -d -c ~/.config/conky/rock-roll.conf
 conky -d -c ~/.config/conky/quotes.conf
 conky -d -c ~/.config/conky/sysmon.conf
 conky -d -c ~/.config/conky/nowplaying.conf
+conky -d -c ~/.config/conky/lyrics.conf
 ```
 
 To stop all widgets:
@@ -57,11 +59,16 @@ All config files are in `~/.config/conky/`. Common tweaks:
 - **Monitor:** Change `xinerama_head` (0 or 1) to target a different display
 - **Quote refresh rate:** Change the `execpi` interval in `quotes.conf` (default 300 seconds)
 - **Network interface:** Update the interface name in `sysmon.conf` if needed
+- **Lyrics scroll speed:** Change the `execpi` interval in `lyrics.conf` (default 10 seconds)
+- **Lyrics visible lines:** Change `LINES_TO_SHOW` in `get_lyrics.sh` (default 16)
+- **Lyrics scroll step:** Change `SCROLL_STEP` in `get_lyrics.sh` (default 3 lines per cycle)
 
 ## Dependencies
 
 - `conky-all`
 - `playerctl`
+- `jq`
+- `curl`
 - Fonts: Anurati, Chilanka, Roboto Mono (included in `fonts/`)
 
 ## Tested On
