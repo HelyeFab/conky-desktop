@@ -31,7 +31,7 @@ function conky_draw_background()
     cairo_arc(cr, r, r, r, math.pi, 3 * math.pi / 2)
     cairo_close_path(cr)
 
-    cairo_set_source_rgba(cr, 0.08, 0.08, 0.08, 1.0)
+    cairo_set_source_rgba(cr, 0, 0, 0, 1.0)
     cairo_fill(cr)
 
     cairo_surface_write_to_png(cs, bg_png)
